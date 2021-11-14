@@ -1,0 +1,14 @@
+{
+	"extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "plugin:@typescript-eslint/eslint-recommended", "prettier"],
+	"parser": "@typescript-eslint/parser",
+	"plugins": ["@typescript-eslint", "prettier"],
+	"rules": {
+		"indent": [1, "tab"],
+		"linebreak-style": 1,
+		"quotes": 1,
+		"semi": 1,
+		"prettier/prettier": 1,
+		"@typescript-eslint/no-non-null-assertion": 0,
+		"@typescript-eslint/no-explicit-any": 0
+	}
+}
