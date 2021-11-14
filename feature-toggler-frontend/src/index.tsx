@@ -3,10 +3,20 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import CreateAccount from './components/CreateAccount';
+
+const createAccount = true;
 
 ReactDOM.render(
   <React.StrictMode>
-      <App />
+      {
+        createAccount && <CreateAccount />
+      }
+      {
+        !createAccount && (
+          <App />
+        )
+      }
   </React.StrictMode>,
   document.getElementById('root')
 );

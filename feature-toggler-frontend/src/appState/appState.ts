@@ -42,7 +42,7 @@ const projectsStore = (set: SetState<AllStores>) => ({
             set({
               projectsFetchingStatus: 'loading',
             });
-            const res = await req.get('/');
+            const res = await req.get('/projects/');
             if(!res) {
               set({
                   projects: [],
@@ -64,7 +64,7 @@ const projectsStore = (set: SetState<AllStores>) => ({
     updateProject: (projectId: string) => true,
     newProject: async (project: {name: string, active: boolean}) => {
         try {
-            const res = await req.post(`/new?projectname=${project.name}&active=${project.active}`);
+            const res = await req.post(`/projects/new?projectname=${project.name}&active=${project.active}`);
             if(res.status !== 200) {
               return;
             }
@@ -82,7 +82,7 @@ const projectsStore = (set: SetState<AllStores>) => ({
     },
     deleteProject: async (projectId: string) => {
       try {
-        const res = await req.post(`/delete?projectid=${projectId}`);
+        const res = await req.post(`/projects/delete?projectid=${projectId}`);
         if(res.status !== 200) {
           console.log(res.data);
           return;
@@ -109,7 +109,7 @@ const featuresStore = (set: SetState<AllStores>) => ({
             set({
               featuresFetchingStatus: 'loading',
             })
-            const res = await req.get('/features');
+            const res = await req.get('/projects/features');
             if(!res) {
               set({
                   featuresFetchingStatus: 'error',
@@ -154,7 +154,7 @@ const featuresStore = (set: SetState<AllStores>) => ({
     },
     deleteFeature: async (projectId: string, featureName: string | number) => {
         try {
-            const res = await req.delete(`/features/delete/${projectId}/${featureName}`);
+            const res = await req.delete(`/projects/features/delete/${projectId}/${featureName}`);
             if(res) {
                 set((state) => {
                     const newFeatures = state.features.filter(feature => feature.feature_name !== featureName);
@@ -170,7 +170,7 @@ const featuresStore = (set: SetState<AllStores>) => ({
     },
     toggleFeature: async(projectId: string, featureName: string | number, enabled: boolean) => {
         try {
-            const res = await req.post(`/features/update/${projectId}/${featureName}?enabled=${enabled}`);
+            const res = await req.post(`/projects/features/update/${projectId}/${featureName}?enabled=${enabled}`);
             if(res.status === 200) {
               set((draft) => {
                   draft.updateFeature(res.data)

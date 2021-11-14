@@ -39,7 +39,7 @@ const Main = ({activeProject, currentView, onCurrentView, onProjectDelete, child
     
     const createNewFeatureToggle = async (featureToggle: {name: string, value: string, description: string, enabled: boolean}) => {
       try {
-        const r = await req.post(`/features/new?projectid=${activeProject!.project_id}&name=${featureToggle.name}&value=${featureToggle.value}&description=${featureToggle.description}&enabled=${featureToggle.enabled ? 1 : 0}`);
+        const r = await req.post(`/projects/features/new?projectid=${activeProject!.project_id}&name=${featureToggle.name}&value=${featureToggle.value}&description=${featureToggle.description}&enabled=${featureToggle.enabled ? 1 : 0}`);
         if(r && r.status === 200) {
           newFeature({...r.data, project_name: filteredFeaturesByProject[0].project_name})
         } else {

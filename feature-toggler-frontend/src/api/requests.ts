@@ -4,9 +4,9 @@ class Requests {
         this.baseUrl = baseUrl;
     }
   
-    public async get(endpoint: string): Promise<any> {
+    public async get(endpoint: string, options?: {}): Promise<any> {
         try {
-            const r = await fetch(this.baseUrl + endpoint, {method: 'GET'});
+            const r = await fetch(this.baseUrl + endpoint, {...options, method: 'GET'});
             if(r.ok) {
                 return r.json();
             }
@@ -15,9 +15,9 @@ class Requests {
         }
     }
   
-    public async post(endpoint: string): Promise<{status: number, data: any}> {
+    public async post(endpoint: string, options?: {}): Promise<{status: number, data: any}> {
         try {
-            const r = await fetch(this.baseUrl + endpoint, {method: 'POST'});
+            const r = await fetch(this.baseUrl + endpoint, {...options, method: 'POST'});
             const data = await r.json();
             return {status: r.status, data};
         } catch(err) {
@@ -25,9 +25,9 @@ class Requests {
         }
     }
   
-    public async delete(endpoint: string): Promise<any> {
+    public async delete(endpoint: string, options?: {}): Promise<any> {
       try {
-          const r = await fetch(this.baseUrl + endpoint, {method: 'DELETE'});
+          const r = await fetch(this.baseUrl + endpoint, {...options, method: 'DELETE'});
           return r.json();
       } catch(err) {
           throw(err);
