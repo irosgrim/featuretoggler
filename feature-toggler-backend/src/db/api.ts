@@ -1,6 +1,6 @@
 import { SqliteDB, PostgresDB } from ".";
 import { v4 as uuidv4 } from 'uuid';
-import { deleteAllFeaturesThatBelongToProject, deleteAllPermissionsForProject, deleteFeatureById, deleteProject, getFeatureStateById, getUserPermissionsForProject, newFeature, newProjectForUser, newUserProjectPermissions, selectAllFeaturesForUser, selectAllFeaturesFromProject, selectAllProjectsForUser, selectProjectForUser, toggleFeature } from "./queries";
+import { deleteAllFeaturesThatBelongToProject, deleteAllPermissionsForProject, deleteFeatureById, deleteProject, getAllFeaturesFromProject, getFeatureStateById, getProjectById, getUserPermissionsForProject, newFeature, newProjectForUser, newUserProjectPermissions, selectAllFeaturesForUser, selectAllFeaturesFromProject, selectAllProjectsForUser, selectProjectForUser, toggleFeature } from "./queries";
 
 export class DatabaseApi {
 	private dbInterface: PostgresDB | SqliteDB;
@@ -48,8 +48,21 @@ export class DatabaseApi {
 			console.log("getAllFeaturesForCurrentUser error: ", err);
 		}
 	}
-	async getProjectForCurrentUserById(email: string, projectId: string) {
-		return [];
+	async getAllFeaturesForProject(projectId: string) {
+		try {
+			const { rows } = await this.dbInterface.query(getAllFeaturesFromProject, [projectId]);
+			return rows;
+		} catch (err) {
+			console.log('getAllFeaturesForProject error: ', err);
+		}
+	}
+	async getProjectById(projectId: string) {
+		try {
+			const { rows } = await this.dbInterface.query(getProjectById, [projectId]);
+			return rows;
+		} catch (err) {
+			console.log('getProjectById error: ', err);
+		}
 	}
 
 	async updateFeature(projectId: string, featureName: string, featureEnabled: boolean) {

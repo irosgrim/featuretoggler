@@ -13,7 +13,7 @@ const server = () => {
 	app.use(express.json());
 	app.use("/api/projects", checkAuthorization, exposeServices, featuresAndProjects)
 	app.use("/api/account", checkAuthorization, exposeServices, account);
-	app.use("/features", checkAuthorization, checkFtKey, exposeServices, features);
+	app.use("/features", checkFtKey, exposeServices, features);
 	return app;
 };
 

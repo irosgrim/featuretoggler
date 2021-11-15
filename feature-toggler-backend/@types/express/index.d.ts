@@ -14,7 +14,8 @@ interface Database {
 	newProject: (email: string, projectName: string, active: boolean, isAdmin: boolean) => Promise<any>;
 	deleteProject: (projectId: string, email: string) => Promise<any>;
 	getAllFeaturesForCurrentUser: (email: string) => Promise<any[] | void>;
-	getProjectForCurrentUserById: (email: string, projectId: string) => Promise<any[] | void>;
+	getProjectById:(projectId: string) => Promise <any[] | void >;
+	getAllFeaturesForProject: (projectId: string) => Promise<any[] | void>;
 	updateFeature: (projectId: string, featureName: string, featureEnabled: any) => Promise<any>;
 	getFeatureStateById: (projectId, featureName: string) => Promise<any>;
 	deleteFeatureById: (projectId: string, featureName: string) => Promise<any>;

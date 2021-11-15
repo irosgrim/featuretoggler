@@ -70,6 +70,23 @@ export const selectAllFeaturesFromProject = `
 	ORDER BY f.date_created ASC;
 `;
 
+export const getAllFeaturesFromProject = `
+	SELECT 
+		"name" as feature_name,
+		"value" as feature_value,
+		enabled as feature_enabled,
+		date_created
+	FROM features
+	WHERE project_id = $1
+	ORDER BY date_created ASC;
+`;
+
+export const getProjectById = `
+	SELECT project_id
+	FROM projects
+	WHERE project_id = $1;
+`;
+
 export const toggleFeature = `
 	UPDATE features
 	SET enabled = $1
