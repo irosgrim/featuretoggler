@@ -83,7 +83,7 @@ CREATE TABLE public.users (
 	username varchar(20) NOT NULL,
 	email varchar(50) NOT NULL,
 	date_created timestamp NULL DEFAULT now(),
-	last_access_date timestamp NOT NULL,
+	last_access_date timestamp NOT NULL DEFAULT now(),
 	"password" varchar(300) NOT NULL,
 	organization_id varchar(50) NOT NULL,
 	"role" varchar(20) NOT NULL,

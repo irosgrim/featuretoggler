@@ -1,11 +1,37 @@
 import { SqliteDB, PostgresDB } from ".";
 import { v4 as uuidv4 } from 'uuid';
-import { deleteAllFeaturesThatBelongToProject, deleteAllPermissionsForProject, deleteFeatureById, deleteProject, getAllFeaturesFromProject, getFeatureStateById, getProjectById, getUserPermissionsForProject, newFeature, newProjectForUser, newUserProjectPermissions, selectAllFeaturesForUser, selectAllFeaturesFromProject, selectAllProjectsForUser, selectProjectForUser, toggleFeature } from "./queries";
+import { createOrganization, createUser, deleteAllFeaturesThatBelongToProject, deleteAllPermissionsForProject, deleteFeatureById, deleteProject, getAllFeaturesFromProject, getFeatureStateById, getOrganization, getProjectById, getUserByEmail, getUserByUsername, getUserPermissionsForProject, newFeature, newProjectForUser, newUserProjectPermissions, selectAllFeaturesForUser, selectAllFeaturesFromProject, selectAllProjectsForUser, selectProjectForUser, toggleFeature } from "./queries";
 
 export class DatabaseApi {
 	private dbInterface: PostgresDB | SqliteDB;
 	constructor(dbInterface: any) {
 		this.dbInterface = dbInterface;
+	}
+
+	async createNewAccount(organizationId: string, name: string, username: string, email: string, password: string): Promise<string | void> {
+		try {
+			const { rows: emailExists } = await this.dbInterface.query(getUserByEmail, [email]);
+			const { rows: usernameExists } = await this.dbInterface.query(getUserByUsername, [username]);
+			if(emailExists.length > 0 ) {
+				return 'email exists';
+			}
+
+			if(usernameExists.length > 0) {
+				return 'username exists';
+			}
+
+			const { rows: org } = await this.dbInterface.query(getOrganization, [organizationId]);
+			if(org.length === 0) {
+				const { rows: newOrganization } = await this.dbInterface.query(createOrganization, [organizationId]);
+			}
+			const { rows: createNewUserRespose } = await this.dbInterface.query(createUser, [username, email, password, organizationId, 'user']);
+			if(createNewUserRespose.length === 0) {
+				return 'user not created';
+			}
+			return 'ok;'
+		} catch (err) {
+			console.log('createNewAccount error: ', err);
+		}
 	}
 	async getAllProjectsForUser(email: string): Promise<void | any[]> {
 		try {

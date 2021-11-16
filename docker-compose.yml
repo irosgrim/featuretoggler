@@ -9,19 +9,21 @@ services:
       context: ./reverse-proxy
     depends_on:
       - feature-toggler-postgres
-      - feature-toggler-client
+      - feature-toggler-dashboard
       - feature-toggler-server
     ports:
       - 80:80
     restart: always
   
-  feature-toggler-client:
-    image: feature-toggler-client
-    container_name: feature-toggler-client
+  feature-toggler-dashboard:
+    image: feature-toggler-dashboard
+    container_name: feature-toggler-dashboard
+    environment:
+      - REACT_APP_BASE_URL=http://localhost:3010/api
     build:
-      context: ./feature-toggler-frontend
+      context: ./feature-toggler-dashboard
     volumes:
-      - ./feature-toggler-client/dist:/usr/src/app/www
+      - ./feature-toggler-dashboard/build:/usr/src/app/www
     ports:
       - 8080:80
     restart: on-failure
@@ -31,22 +33,29 @@ services:
     image: postgres
     restart: unless-stopped
     environment:
-    - POSTGRES_USER=change-this-user
-    - POSTGRES_PASSWORD=change-this-password
+    - POSTGRES_USER=ft
+    - POSTGRES_PASSWORD=password
     - POSTGRES_DB=feature-toggler
     ports:
-    - "7654:5432"
+    - 7654:5432
     volumes:
-    - psql:/var/lib/postgresql/data
+    - ./DB:/var/lib/postgresql/data
+    - ./DBINIT/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
   
-  feature-toggler-backend:
-    image: feature-toggler-backend
-    container_name: feature-toggler-backend
+  feature-toggler-server:
+    image: feature-toggler-server
+    container_name: feature-toggler-server
     build:
-      context: ./feature-toggler-backend
-    env_file:
-        - ./feature-toggler-backend/.env
+      context: ./feature-toggler-server
+    environment:
+        - SERVER_PORT=3010
+        - DB_TYPE=SQLITE
+        - DB_NAME=feature-toggler
+        - DB_USERNAME=ft
+        - DB_PASSWORD=password
+        - DB_PORT=7654
+        - DB_HOST=localhost
     ports:
-      - 3014:3000
+      - 3010:3010
     restart: on-failure
   

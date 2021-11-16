@@ -1,3 +1,33 @@
+export const getOrganization = `
+	SELECT organization_id
+	FROM organizations
+	WHERE organization_id = $1;
+`;
+
+export const getUserByEmail = `
+	SELECT username, email, organization_id, role
+	FROM users
+	WHERE email = $1;
+`;
+
+export const getUserByUsername = `
+	SELECT username, email, organization_id, role
+	FROM users
+	WHERE username = $1;
+`;
+
+export const createOrganization = `
+	INSERT INTO organizations (organization_id)
+	VALUES ($1)
+	RETURNING *;
+`;
+
+export const createUser = `
+	INSERT INTO users (username, email, password, organization_id, role)
+	VALUES ($1, $2, $3, $4, $5)
+	RETURNING username, email, organization_id, role;
+`;
+
 export const selectProject = `
 	SELECT * FROM projects
 	WHERE project_id = $1;

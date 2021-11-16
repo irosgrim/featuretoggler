@@ -5,7 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import CreateAccount from './components/CreateAccount';
 
-const createAccount = false;
+const createAccount = true;
 
 ReactDOM.render(
   <React.StrictMode>

@@ -1,8 +1,8 @@
-import express from 'express';
+import express, { Request, Response, NextFunction} from 'express';
 import dbInterface from '../../db';
 const featuresAndProjects = express();
 
-featuresAndProjects.get("/", async (req, res) => {
+featuresAndProjects.get("/", async (req: Request, res: Response) => {
     const db = req.services?.db;
 	if (req.user) {
 		const { email } = req.user;
@@ -23,7 +23,7 @@ featuresAndProjects.get("/", async (req, res) => {
 	}
 });
 
-featuresAndProjects.post("/delete", async (req, res) => {
+featuresAndProjects.post("/delete", async (req: Request, res: Response) => {
     const db = req.services?.db;
 	const { projectid: projectId } = req.query;
 	if (req.user && projectId) {
@@ -46,7 +46,7 @@ featuresAndProjects.post("/delete", async (req, res) => {
 	}
 });
 
-featuresAndProjects.post("/new", async (req, res) => {
+featuresAndProjects.post("/new", async (req: Request, res: Response) => {
     const db = req.services?.db;
 	const { projectname, active } = req.query;
 	const isActive = active === 'true';
@@ -68,7 +68,7 @@ featuresAndProjects.post("/new", async (req, res) => {
 	}
 });
 
-featuresAndProjects.get("/features", async (req, res) => {
+featuresAndProjects.get("/features", async (req: Request, res: Response) => {
     const db = req.services?.db;
 	if (req.user) {
 		const { email } = req.user;
@@ -89,7 +89,7 @@ featuresAndProjects.get("/features", async (req, res) => {
 	}
 })
 
-featuresAndProjects.post('/features/update/:projectId/:featureName', async (req, res) => {
+featuresAndProjects.post('/features/update/:projectId/:featureName', async (req: Request, res: Response) => {
 	const {projectId, featureName} = req.params;
 	const { enabled } = req.query;
 	const db = req.services?.db;
@@ -107,7 +107,7 @@ featuresAndProjects.post('/features/update/:projectId/:featureName', async (req,
 	}
 })
 
-featuresAndProjects.delete('/features/delete/:projectId/:featureName', async (req, res) => {
+featuresAndProjects.delete('/features/delete/:projectId/:featureName', async (req: Request, res: Response) => {
 	const {projectId, featureName} = req.params;
 	const db = req.services?.db;
 	if (req.user) {
@@ -117,7 +117,7 @@ featuresAndProjects.delete('/features/delete/:projectId/:featureName', async (re
 	}
 });
 
-featuresAndProjects.post('/features/new', async (req, res) => {
+featuresAndProjects.post('/features/new', async (req: Request, res: Response) => {
 	const {projectid, name, value, description, enabled } = req.query;
 	const db = req.services?.db;
 	const isEnabled = enabled === 'true';
