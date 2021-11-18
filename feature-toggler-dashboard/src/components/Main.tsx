@@ -3,16 +3,16 @@ import { Link, Route } from "react-router-dom";
 import req from "../api/requests";
 import useStore from "../appState/appState";
 import useClickOutside from "../hooks/useClickOutside";
-import { Project } from "../types/ft";
+import { Feature, Project } from "../types/ft";
 import CreateFeatureToggle from "./CreateFeatureToggle";
 import Features from "./Features";
 import ProjectSettings from "./ProjectSettings";
 
 type MainProps = {
     activeProject: Project | null;
-    currentView: 'features' | 'settings';
+    currentView: 'features' | 'settings' | 'api';
     children?: React.ReactElement;
-    onCurrentView: (view: 'features' | 'settings') => void;
+    onCurrentView: (view: 'features' | 'settings' | 'api') => void;
     onProjectDelete: () => void;
 }
 const Main = ({activeProject, currentView, onCurrentView, onProjectDelete, children}: MainProps) => {
@@ -54,8 +54,8 @@ const Main = ({activeProject, currentView, onCurrentView, onProjectDelete, child
         <main className="main-wrapper">
         {
           activeProject && (
-            <nav className="bg-gray-100 pt-2 pl-2">
-              <ul className="settings-menu flex">
+            <nav className="bg-gray-100 pt-2 pl-2 settings-menu">
+              <ul className="flex">
                 <li>
                   <Link to={`/projects/${activeProject.project_id}/features`}>
                     <button  onClick={() => onCurrentView('features')} className={currentView === 'features' ? 'w-full h-full py-2 px-4 bg-white rounded-t-lg border-l-2 border-t-2 border-r-2 border-gray-200' : 'w-full h-full py-2 px-4'}>
@@ -70,6 +70,13 @@ const Main = ({activeProject, currentView, onCurrentView, onProjectDelete, child
                     </button>
                   </Link>
                 </li>
+                <li>
+                  <Link to={`/projects/${activeProject.project_id}/api`}>
+                    <button onClick={() => onCurrentView('api')} className={currentView === 'api' ? 'w-full h-full py-2 px-4 bg-white rounded-t-lg border-l-2 border-t-2 border-r-2 border-gray-200' : 'w-full h-full py-2 px-4'}>
+                        API integration
+                    </button>
+                  </Link>
+                </li>
               </ul>
             </nav>
           )
@@ -77,10 +84,15 @@ const Main = ({activeProject, currentView, onCurrentView, onProjectDelete, child
         { children }
         <div className="main-content pb-4 pl-4">
           <Route path="/projects/:projectId/:section" render={({ match }) => {
+            
+            const showSection = (section: 'features' | 'settings' | 'api') => {
+              return match.params.section === section && activeProject !== null;
+            }
+
             return (
                 <div className="overflow-y-scroll pt-4 pr-4" style={{height: 'calc(100vh - 100px)'}}>
                   {
-                    match.params.section === 'features' && activeProject !== null ? (
+                    showSection('features') && (
                       <div>
                         <div className="mb-4">
                           <div className="flex justify-between align-bottom">
@@ -103,18 +115,51 @@ const Main = ({activeProject, currentView, onCurrentView, onProjectDelete, child
                         {
                          filteredFeaturesByProject.length > 0 && (
                             <>
-                              <Features features={filteredFeaturesByProject} />
+                              <Features 
+                                features={filteredFeaturesByProject}
+                                onEditFeature={(feature: any) => {
+                                  setNewFeatureWindowOpen(true);
+                                  console.log(feature);
+                                } }
+                              />
                             </>
                           )
                         }
                     </div>
                     ) 
-                    :
-                    (
+                  }
+                  {
+                    showSection('settings') && (
                       <ProjectSettings 
                         currentProject={activeProject!}
                         onProjectDelete={() => onProjectDelete()}
                       />
+                    )
+                  }
+                  {
+                    showSection('api') && (
+                      <div>
+                        <div>
+                          <h2 className="font-bold">JavaScript fetch api:</h2>
+                          <pre className="p-3 text-left text-xs md:text-sm bg-blue-50">
+                            <code>
+                              {
+                                `
+const options = {
+  headers: {
+      'ft-key': '${activeProject!.project_id}',
+    }
+}
+
+fetch('http://localhost:3010/features', options)
+.then(data => data.json())
+.then(res => console.log(res));
+`
+                              }
+                            </code>
+                          </pre>
+                        </div>
+                      </div>
                     )
                   }
                 </div>

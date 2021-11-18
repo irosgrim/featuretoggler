@@ -61,19 +61,19 @@ const ProjectSettings = ({currentProject, onProjectDelete}: ProjectSettingsProps
                         <label htmlFor="new_project_name" className="block font-bold">
                             Project name
                         </label>
-                        <div className="flex">
+                        <div className="md:flex">
                             <input 
                                 type="text" 
                                 id="new_project_name" 
                                 placeholder="project name" 
-                                className="border border-gray-400 rounded-md p-2 w-2/3 md:w-1/3"
+                                className="border border-gray-400 rounded-md p-2 w-full sm:w-2/3 md:w-1/3 mb-4 md:mb-0"
                                 value={projectName}
                                 required
                                 onInput={(e: any) => setProjectName(e.target.value)}
                             />
                             <button
                                 type="button"
-                                className={updateProjectNameButtonEnabled() ? 'border border-blue-400 bg-blue-50 rounded-md p-2 ml-4' : 'border border-blue-400 bg-blue-50 rounded-md p-2 ml-4 opacity-50 cursor-auto'}
+                                className={updateProjectNameButtonEnabled() ? 'border border-blue-400 bg-blue-50 rounded-md p-2 md:ml-4' : 'border border-blue-400 bg-blue-50 rounded-md p-2 md:ml-4 opacity-50 cursor-auto'}
                                 disabled={!updateProjectNameButtonEnabled()}
                                 onClick={() => console.log('enabled')}
                             >

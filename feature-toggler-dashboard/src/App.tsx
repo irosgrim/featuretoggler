@@ -2,7 +2,7 @@ import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import {
   BrowserRouter as Router, Redirect
 } from "react-router-dom";
-import './styles/App.css';
+import './styles/App.scss';
 import Sidebar from './components/Sidebar';
 import Main from './components/Main';
 import useClickOutside from './hooks/useClickOutside';
@@ -28,7 +28,7 @@ function App() {
   
   const [newProjectWindowOpen, setNewProjectWindowOpen] = useState(false);
   const [newProjectName, setNewProjectName] = useState('');
-  const [currentView, setCurrentView] = useState<'features' | 'settings'>('features');
+  const [currentView, setCurrentView] = useState<'features' | 'settings' | 'api'>('features');
   const [activeProject , setActiveProject] = useState<Project | null>(null);
   const newProjectWindowRef = useRef<HTMLDivElement>(null);
   
@@ -74,13 +74,17 @@ function App() {
       {
         newProjectWindowOpen && (
           <div className="absolute top-0 left-0 right-0 bottom-0 bg-black bg-opacity-20 z-10">
-            <div className="bg-white rounded-md p-4 w-1/3 mx-auto mt-12 text-left" ref={newProjectWindowRef}>
-              <button type="button" onClick={() => setNewProjectWindowOpen(false)}>X</button>
+            <div className="bg-white rounded-md p-4 w-4/5 md:w-1/3 mx-auto mt-12 text-left" ref={newProjectWindowRef}>
               <label htmlFor="project_name" className="block font-bold text-left mb-4">
                 Project name
               </label>
               <input type="text" id="project_name" className="border border-gray-400 rounded-md p-2 w-100" onChange={(e) => setNewProjectName(e.target.value)}/>
-              <button type="button" className="border-2 border-blue-400 rounded-md p-3 bg-blue-100 mt-8" onClick={() => handleNewProject()}>
+              <button 
+                type="button" 
+                className={`border-2 border-blue-400 rounded-md p-3 bg-blue-100 mt-8 ${newProjectName === '' && 'opacity-50 cursor-auto'}`} 
+                onClick={() => handleNewProject()}
+                disabled={newProjectName === ''}
+              >
                 Create project
               </button>
             </div>

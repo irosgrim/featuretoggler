@@ -1,19 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import './styles/index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import CreateAccount from './components/CreateAccount';
 
-const createAccount = true;
+const query = new URLSearchParams(window.location.search);
+const isCreateAccount = query.get('create-account');
 
 ReactDOM.render(
   <React.StrictMode>
       {
-        createAccount && <CreateAccount />
+        isCreateAccount && <CreateAccount />
       }
       {
-        !createAccount && (
+        !isCreateAccount && (
           <App />
         )
       }
