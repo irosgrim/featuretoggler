@@ -48,7 +48,7 @@ const Features = ({features, onEditFeature}: FeaturesProps) => {
                     </div>
                 </div>
             </div>
-            <nav className="flex justify-end">
+            {/* <nav className="flex justify-end">
                 <ul className="flex justify-start w-52">
                     <li>
                         <button type="button">
@@ -56,7 +56,7 @@ const Features = ({features, onEditFeature}: FeaturesProps) => {
                         </button>
                     </li>
                 </ul>
-            </nav>
+            </nav> */}
             <ul className="list-style-none mt-4 p-0">
                 {
                     filteredFeatures().map((feature: Feature) => (
