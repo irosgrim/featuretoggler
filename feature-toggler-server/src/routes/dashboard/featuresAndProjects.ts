@@ -4,6 +4,13 @@ const featuresAndProjects = express();
 
 featuresAndProjects.get("/", async (req: Request, res: Response) => {
     const db = req.services?.db;
+	res.cookie(`mycookie`,`the cookie value`,{
+        maxAge: 5000,
+        // expires works the same as the maxAge
+        secure: false,
+        httpOnly: false,
+        sameSite: 'lax'
+    });
 	if (req.user) {
 		const { email } = req.user;
 		if (db) {

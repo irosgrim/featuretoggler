@@ -6,10 +6,12 @@ import features from "./routes/client/features";
 import featuresAndProjects from "./routes/dashboard/featuresAndProjects";
 import checkFtKey from "./middlewares/checkFtKey";
 import account from "./routes/dashboard/account";
+import cookieParser from "cookie-parser";
 
 const server = () => {
 	const app = express();
 	app.use(cors());
+	app.use(cookieParser());
 	app.use(express.json());
 	app.use("/api/projects", checkAuthorization, exposeServices, featuresAndProjects)
 	app.use("/api/account", checkAuthorization, exposeServices, account);
