@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { Ref, useState } from "react";
 
-const Toggle = React.memo(({id, checked = true, onChange, className = '', label, labelPosition = 'left'}: {id: string, checked: boolean, label?: React.ReactElement, labelPosition?: 'left' | 'right', onChange: (checkboxState: boolean) => void, className?: string} ) => {
+const Toggle = React.forwardRef(({id, checked = true, onChange, className = '', label, labelPosition = 'left'}: {id: string, checked: boolean, label?: React.ReactElement, labelPosition?: 'left' | 'right', onChange: (checkboxState: boolean) => void, className?: string}, ref:any) => {
     return (
         <label 
             htmlFor={id} 
@@ -8,7 +8,8 @@ const Toggle = React.memo(({id, checked = true, onChange, className = '', label,
         >
             {labelPosition === 'left' && label}
             <div className="relative">
-                <input 
+                <input
+                    ref={ref} 
                     type="checkbox" 
                     id={id} 
                     className="sr-only" 

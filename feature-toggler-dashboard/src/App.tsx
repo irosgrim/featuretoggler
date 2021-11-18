@@ -6,7 +6,7 @@ import './styles/App.scss';
 import Sidebar from './components/Sidebar';
 import Main from './components/Main';
 import useClickOutside from './hooks/useClickOutside';
-import useStore, { useLocalStorage } from './appState/appState';
+import useStore from './appState/appState';
 import { Project } from './types/ft';
 
 function App() {
@@ -66,7 +66,6 @@ function App() {
         setActiveProject(r![0]);
       }
     });
-    console.log(projects);
     fetchAllFeatures();
   }, []);
   return (

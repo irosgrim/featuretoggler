@@ -3,8 +3,8 @@ import { Link, Route } from "react-router-dom";
 import req from "../api/requests";
 import useStore from "../appState/appState";
 import useClickOutside from "../hooks/useClickOutside";
-import { Feature, Project } from "../types/ft";
-import CreateFeatureToggle from "./CreateFeatureToggle";
+import { Project } from "../types/ft";
+import EditFeatureToggle from "./EditFeatureToggle";
 import Features from "./Features";
 import ProjectSettings from "./ProjectSettings";
 
@@ -22,11 +22,12 @@ const Main = ({activeProject, currentView, onCurrentView, onProjectDelete, child
       newFeature: state.newFeature,
     }));
 
-    const [newFeatureWindowOpen, setNewFeatureWindowOpen] = useState(false);
+    const [editFeatureWindowOpen, setEditFeatureWindowOpen] = useState(false);
+    const [featureToggleToEdit, setFeatureToggleToEdit] = useState(null);
 
     const newFeatureWindowRef = useRef<HTMLDivElement>(null);
     const onClickOutside = () => {
-        setNewFeatureWindowOpen(false);
+        setEditFeatureWindowOpen(false);
     };
     useClickOutside(newFeatureWindowRef, onClickOutside);
 
@@ -99,7 +100,7 @@ const Main = ({activeProject, currentView, onCurrentView, onProjectDelete, child
                             <h3 className="text-2xl">{activeProject ? activeProject.project_name : ''}</h3>
                             <button 
                               className="h-14 transition duration-200 ease-in-out bg-blue-50 hover:bg-blue-100 text-sm md:text-lg font-semibold text-gray-700 rounded border border-solid border-blue-300 p-1 md:p-3"
-                              onClick={() => setNewFeatureWindowOpen(true)}
+                              onClick={() => setEditFeatureWindowOpen(true)}
                               >
                                 + New toggle
                               </button>
@@ -118,8 +119,8 @@ const Main = ({activeProject, currentView, onCurrentView, onProjectDelete, child
                               <Features 
                                 features={filteredFeaturesByProject}
                                 onEditFeature={(feature: any) => {
-                                  setNewFeatureWindowOpen(true);
-                                  console.log(feature);
+                                  setFeatureToggleToEdit(feature)
+                                  setEditFeatureWindowOpen(true);
                                 } }
                               />
                             </>
@@ -167,11 +168,17 @@ fetch('http://localhost:3010/features', options)
           }}/>
         </div>
         {
-          newFeatureWindowOpen && (
+          editFeatureWindowOpen && (
             <div  className="absolute top-0 bottom-0 right-0 left-0 bg-black bg-opacity-20" >
               <div ref={newFeatureWindowRef}>
-                <CreateFeatureToggle 
-                  onCloseWindow={() => setNewFeatureWindowOpen(false)} 
+                <EditFeatureToggle
+                  editFeatureToggle={featureToggleToEdit}
+                  onCloseWindow={() => {
+                    if(featureToggleToEdit) {
+                      setFeatureToggleToEdit(null);
+                    }
+                    setEditFeatureWindowOpen(false);
+                  }}
                   onCreateNewFeatureToggle={(featureToggle: {name: string, value: string, description: string, enabled: boolean}) => createNewFeatureToggle(featureToggle)}
                 />
               </div>
