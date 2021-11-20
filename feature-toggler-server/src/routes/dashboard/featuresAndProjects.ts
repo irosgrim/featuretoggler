@@ -1,16 +1,16 @@
-import express, { Request, Response, NextFunction} from 'express';
-import dbInterface from '../../db';
+import express, { Request, Response, NextFunction } from "express";
+import dbInterface from "../../db";
 const featuresAndProjects = express();
 
 featuresAndProjects.get("/", async (req: Request, res: Response) => {
-    const db = req.services?.db;
-	res.cookie(`mycookie`,`the cookie value`,{
-        maxAge: 5000,
-        // expires works the same as the maxAge
-        secure: false,
-        httpOnly: false,
-        sameSite: 'lax'
-    });
+	const db = req.services?.db;
+	res.cookie("mycookie", "the cookie value", {
+		maxAge: 5000,
+		// expires works the same as the maxAge
+		secure: false,
+		httpOnly: false,
+		sameSite: "lax",
+	});
 	if (req.user) {
 		const { email } = req.user;
 		if (db) {
@@ -31,7 +31,7 @@ featuresAndProjects.get("/", async (req: Request, res: Response) => {
 });
 
 featuresAndProjects.post("/delete", async (req: Request, res: Response) => {
-    const db = req.services?.db;
+	const db = req.services?.db;
 	const { projectid: projectId } = req.query;
 	if (req.user && projectId) {
 		const { email } = req.user;
@@ -45,7 +45,7 @@ featuresAndProjects.post("/delete", async (req: Request, res: Response) => {
 				res.status(200).send(deleteProjectResponse);
 			} catch (err) {
 				console.log("DELETE project error:  ", err);
-				res.status(400).send('Could not delete');
+				res.status(400).send("Could not delete");
 			}
 		}
 	} else {
@@ -54,14 +54,14 @@ featuresAndProjects.post("/delete", async (req: Request, res: Response) => {
 });
 
 featuresAndProjects.post("/new", async (req: Request, res: Response) => {
-    const db = req.services?.db;
+	const db = req.services?.db;
 	const { projectname, active } = req.query;
-	const isActive = active === 'true';
+	const isActive = active === "true";
 	if (req.user) {
 		const { email } = req.user;
 		if (db) {
 			const newProject = await db.newProject(email, projectname as string, isActive, true);
-			if(newProject === -1) {
+			if (newProject === -1) {
 				res.status(400).send(JSON.stringify("The project exists!"));
 			}
 			if (!newProject || !newProject.length) {
@@ -76,7 +76,7 @@ featuresAndProjects.post("/new", async (req: Request, res: Response) => {
 });
 
 featuresAndProjects.get("/features", async (req: Request, res: Response) => {
-    const db = req.services?.db;
+	const db = req.services?.db;
 	if (req.user) {
 		const { email } = req.user;
 		if (db) {
@@ -94,28 +94,28 @@ featuresAndProjects.get("/features", async (req: Request, res: Response) => {
 	} else {
 		res.status(401).send("Unauthorized!");
 	}
-})
+});
 
-featuresAndProjects.post('/features/update/:projectId/:featureName', async (req: Request, res: Response) => {
-	const {projectId, featureName} = req.params;
+featuresAndProjects.post("/features/update/:projectId/:featureName", async (req: Request, res: Response) => {
+	const { projectId, featureName } = req.params;
 	const { enabled } = req.query;
 	const db = req.services?.db;
 	if (req.user) {
 		try {
 			const toggleFeature = await db?.updateFeature(projectId, featureName, enabled);
-			if(toggleFeature) {
+			if (toggleFeature) {
 				res.status(200).send(toggleFeature);
 				return;
 			}
 			res.status(500).send();
 		} catch (err) {
-			console.log('UPDATE ERROR: ', err);
+			console.log("UPDATE ERROR: ", err);
 		}
 	}
-})
+});
 
-featuresAndProjects.delete('/features/delete/:projectId/:featureName', async (req: Request, res: Response) => {
-	const {projectId, featureName} = req.params;
+featuresAndProjects.delete("/features/delete/:projectId/:featureName", async (req: Request, res: Response) => {
+	const { projectId, featureName } = req.params;
 	const db = req.services?.db;
 	if (req.user) {
 		const feature = await db?.getFeatureStateById(projectId, featureName as string);
@@ -124,20 +124,20 @@ featuresAndProjects.delete('/features/delete/:projectId/:featureName', async (re
 	}
 });
 
-featuresAndProjects.post('/features/new', async (req: Request, res: Response) => {
-	const {projectid, name, value, description, enabled } = req.query;
+featuresAndProjects.post("/features/new", async (req: Request, res: Response) => {
+	const { projectid, name, value, description, enabled } = req.query;
 	const db = req.services?.db;
-	const isEnabled = enabled === 'true';
+	const isEnabled = enabled === "true";
 	if (req.user) {
 		const { email } = req.user;
 		try {
 			const newFeature = await db?.newFeature(email, projectid as string, name as string, value as string, description as string, isEnabled);
-			if(newFeature) {
+			if (newFeature) {
 				res.status(200).send(newFeature);
 			}
-			res.status(400).send({error: 'Feature exists'});
+			res.status(400).send({ error: "Feature exists" });
 		} catch (err) {
-			console.log('NEW FEATURE ERROR: ', err);
+			console.log("NEW FEATURE ERROR: ", err);
 		}
 	}
 });

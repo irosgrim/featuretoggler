@@ -1,5 +1,5 @@
 import express from "express";
-import cors from 'cors';
+import cors from "cors";
 import checkAuthorization from "./middlewares/auth";
 import exposeServices from "./middlewares/services";
 import features from "./routes/client/features";
@@ -13,7 +13,7 @@ const server = () => {
 	app.use(cors());
 	app.use(cookieParser());
 	app.use(express.json());
-	app.use("/api/projects", checkAuthorization, exposeServices, featuresAndProjects)
+	app.use("/api/projects", checkAuthorization, exposeServices, featuresAndProjects);
 	app.use("/api/account", checkAuthorization, exposeServices, account);
 	app.use("/features", checkFtKey, exposeServices, features);
 	return app;

@@ -151,7 +151,6 @@ export const getFeatureStateById = `
 	WHERE project_id = $1 AND name = $2;
 `;
 
-
 export const newFeature = `
 	INSERT INTO features (project_id, name, value, enabled, description)
 	VALUES ($1, $2, $3, $4, $5)
@@ -186,4 +185,3 @@ export const deleteProject = `
 	DELETE FROM projects
 	WHERE project_id = $1;
 `;
-

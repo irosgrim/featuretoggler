@@ -11,11 +11,11 @@ type Projects = {
 
 interface Database {
 	createNewAccount: (organizationId: string, name: string, username: string, email: string, password: string) => Promise<string | void>;
-	getAllProjectsForUser: (email: string) =>  Promise<void | any[]>;
+	getAllProjectsForUser: (email: string) => Promise<void | any[]>;
 	newProject: (email: string, projectName: string, active: boolean, isAdmin: boolean) => Promise<any>;
 	deleteProject: (projectId: string, email: string) => Promise<any>;
 	getAllFeaturesForCurrentUser: (email: string) => Promise<any[] | void>;
-	getProjectById:(projectId: string) => Promise <any[] | void >;
+	getProjectById: (projectId: string) => Promise<any[] | void>;
 	getAllFeaturesForProject: (projectId: string) => Promise<any[] | void>;
 	updateFeature: (projectId: string, featureName: string, featureEnabled: any) => Promise<any>;
 	getFeatureStateById: (projectId, featureName: string) => Promise<any>;

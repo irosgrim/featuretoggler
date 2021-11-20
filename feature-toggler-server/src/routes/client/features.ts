@@ -8,7 +8,7 @@ featuresRoute.get("/", async (req, res) => {
 		if (db) {
 			try {
 				const project = await db.getProjectById(projectKey);
-				if(!project || !project.length) {
+				if (!project || !project.length) {
 					res.status(404).send("No project found");
 					return;
 				}
