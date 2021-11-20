@@ -1,0 +1,74 @@
+{
+	"env": {
+		"browser": true,
+		"es2021": true
+	},
+	"extends": [
+        "plugin:@typescript-eslint/recommended",
+        "plugin:react/recommended", 
+        "airbnb"
+    ],
+	"parser": "@typescript-eslint/parser",
+	"parserOptions": {
+		"ecmaFeatures": {
+			"jsx": true
+		},
+		"ecmaVersion": 13,
+		"sourceType": "module"
+	},
+	"plugins": [
+        "@typescript-eslint", 
+        "react", 
+        "react-hooks"
+    ],
+	"rules": {
+		"@typescript-eslint/no-use-before-define": "off",
+		"react/jsx-filename-extension": ["warn", { "extensions": [".tsx"] }],
+		"no-use-before-define": "off",
+		"import/extensions": [
+			"error",
+			"ignorePackages",
+			{
+				"ts": "never",
+				"tsx": "never"
+			}
+		],
+		"@typescript-eslint/no-shadow": "off",
+		"@typescript-eslint/ban-ts-comment": "off",
+		"@typescript-eslint/no-explicit-any": "off",
+		"@typescript-eslint/no-non-null-assertion": "off",
+		"react/prop-types": "off",
+		"react/jsx-indent-props": "off",
+		"react/jsx-indent": ["warn", "tab"],
+		"react-hooks/exhaustive-deps": "off",
+		"react/require-default-props": "off",
+		"react-hooks/rules-of-hooks": "error",
+		"react/jsx-closing-bracket-location": "off",
+		"react/function-component-definition": "off",
+		"jsx-a11y/label-has-associated-control": "off",
+		"no-tabs": "off",
+		"no-shadow": "off",
+		"no-console": "off",
+		"no-useless-catch": "off",
+		"no-trailing-spaces": "off",
+		"no-restricted-syntax": "off",
+		"no-useless-constructor": "off",
+		"no-mixed-spaces-and-tabs": "off",
+		"max-len": "off",
+		"max-classes-per-file": "off",
+		"arrow-body-style": "off",
+		"indent": "off",
+		"consistent-return": "off",
+		"class-methods-use-this": "off",
+		"camelcase": "off",
+		"object-curly-newline": "off",
+		"import/prefer-default-export": "off",
+		"global-require": "off",
+		"operator-linebreak": "off"
+	},
+	"settings": {
+		"import/resolver": {
+			"typescript": {}
+		}
+	}
+}
